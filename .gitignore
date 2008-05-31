@@ -10,3 +10,5 @@ db/*.sqlite3
 db/*.db
 doc/api
 doc/app
+vendor/plugins/rspec/.git
+vendor/plugins/rspec-rails/.git
