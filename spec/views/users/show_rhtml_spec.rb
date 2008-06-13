@@ -4,7 +4,9 @@ describe "/users/show.html.erb" do
   include UsersHelper
   
   before(:each) do
-    @user = mock_user
+    ## @user = mock_user
+    @user = mock("user")
+    
 
     assigns[:user] = @user
     

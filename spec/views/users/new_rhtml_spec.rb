@@ -7,7 +7,8 @@ describe "/users/new.html.erb" do
     @errors = mock("errors")
     @errors.stub!(:count).and_return(0)
 
-    @user = mock_user
+    @user = mock("user")
+    
     @user.stub!(:errors).and_return @errors
     assigns[:user] = @user
   end

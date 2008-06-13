@@ -15,7 +15,9 @@ end
 describe SessionsController, "POST without remember me" do
 
   before(:each) do
-    @user = mock_user
+    ## @user = mock_user
+    @user = mock("user")
+    
     User.stub!(:authenticate).and_return(@user)
     # controller.stub!(:logged_in?).and_return(true)
   end
@@ -44,7 +46,9 @@ end
 describe SessionsController, "POST with remember me" do
 
   before(:each) do
-    @user = mock_user
+    ## @user = mock_user
+    @user = mock("user")
+    
 
     @ccookies = mock('cookies')
     User.stub!(:authenticate).and_return(@user)
@@ -72,7 +76,9 @@ end
 describe SessionsController, "POST when invalid" do
 
   before(:each) do
-    @user = mock_user
+    ## @user = mock_user
+    @user = mock("user")
+    
 
     controller.stub!(:logged_in?).and_return(false, false)
     User.stub!(:authenticate).and_return(nil)
@@ -102,7 +108,9 @@ end
 describe SessionsController, "logout" do
 
   before(:each) do
-    @user = mock_user
+    ## @user = mock_user
+    @user = mock("user")
+    
 
     @ccookies = mock('cookies')
     controller.stub!(:current_user).and_return(@user)
