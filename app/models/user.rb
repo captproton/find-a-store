@@ -22,7 +22,6 @@ class User < ActiveRecord::Base
   include AuthenticatedBase
   has_many :assets, :as => :attachable
 
-  composed_of :tz, :class_name => 'TZInfo::Timezone', :mapping => %w( time_zone time_zone )  ## in rails 2.1 this will be updated.
 
   validates_uniqueness_of :login, :email, :case_sensitive => false
 

@@ -10,8 +10,7 @@ describe "/users/edit.html.erb" do
     @user = mock_model(User, :errors => @errors, 
       :login => 'Foo', 
       :email => 'foo@test.bar', 
-      :password => nil, :password_confirmation => nil,
-      :time_zone => 'Etc/UTC')
+      :password => nil, :password_confirmation => nil)
 
     assigns[:user] = @user
   end

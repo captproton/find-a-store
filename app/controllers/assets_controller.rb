@@ -1,4 +1,4 @@
-#
+# can you say polymophic?
 # As you read this, bear in mind that this controller
 # is involved in a polymorphic relationship and should
 # *never* appear directly in a route.  
