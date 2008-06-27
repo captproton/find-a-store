@@ -1,5 +1,5 @@
 # This file is auto-generated from the current state of the database. Instead of editing this file, 
-# please use the migrations feature of ActiveRecord to incrementally modify your database, and
+# please use the migrations feature of Active Record to incrementally modify your database, and
 # then regenerate this schema definition.
 #
 # Note that this schema.rb definition is the authoritative source for your database schema. If you need
@@ -13,16 +13,16 @@ ActiveRecord::Schema.define(:version => 2) do
 
   create_table "assets", :force => true do |t|
     t.string   "filename"
-    t.integer  "width"
-    t.integer  "height"
+    t.integer  "width",           :limit => 11
+    t.integer  "height",          :limit => 11
     t.string   "content_type"
-    t.integer  "size"
+    t.integer  "size",            :limit => 11
     t.string   "attachable_type"
-    t.integer  "attachable_id"
+    t.integer  "attachable_id",   :limit => 11
     t.datetime "updated_at"
     t.datetime "created_at"
     t.string   "thumbnail"
-    t.integer  "parent_id"
+    t.integer  "parent_id",       :limit => 11
   end
 
   create_table "users", :force => true do |t|
@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(:version => 2) do
     t.datetime "last_login_at"
     t.string   "remember_token"
     t.datetime "remember_token_expires_at"
-    t.integer  "visits_count",                            :default => 0
+    t.integer  "visits_count",              :limit => 11, :default => 0
     t.string   "time_zone",                               :default => "Etc/UTC"
     t.string   "permalink"
   end

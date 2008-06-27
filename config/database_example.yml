@@ -1,0 +1,18 @@
+login: &login
+  adapter: mysql
+  host: localhost
+  username: username
+  password: passwd
+
+development:
+  database: find_a_store_development
+  <<: *login
+
+test:
+  database: find_a_store_test
+  <<: *login
+
+production:
+  database: find_a_store_production
+  <<: *login
+
