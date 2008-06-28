@@ -1,0 +1,10 @@
+login: &login
+  adapter: mysql
+  host: localhost
+  username: deploy
+  password: Iwe2tht4ju!
+
+production:
+  database: find_a_store_production
+  <<: *login
+
