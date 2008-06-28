@@ -173,8 +173,3 @@ RailsRuby /usr/bin/ruby1.8
     sudo "/etc/init.d/apache2 reload"
   end
   
-  desc "Restart Application"
-  task :application_restart do
-    touch "#{deploy_to}/tmp/restart.txt"
-  end
-end

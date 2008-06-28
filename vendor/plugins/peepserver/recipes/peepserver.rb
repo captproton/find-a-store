@@ -52,18 +52,9 @@ namespace :db do
       username: #{user}
       password: #{password}
 
-    development:
-      database: #{application}_dev
-      socket: /tmp/mysql.sock
-      <<: *base
-
-    test:
-      database: #{application}_test
-      socket: /tmp/mysql.sock
-      <<: *base
 
     production:
-      database: #{application}_prod
+      database: #{application}_production
       socket:   /var/run/mysqld/mysqld.sock
       <<: *base
     EOF
@@ -173,6 +164,9 @@ namespace :slicehost do
     end
   end
 
+
+
+
   desc "Configure Passenger"
   task :config_passenger do
     passenger_config =<<-EOF
@@ -183,23 +177,30 @@ namespace :slicehost do
     sudo "mv src/passenger /etc/apache2/conf.d/passenger"
   end
 
-  desc "Configure VHost"
-  task :config_vhost do
-    vhost_config =<<-EOF
-<VirtualHost *:80>
-  ServerName bigquiz.info
-  DocumentRoot #{deploy_to}/current/public
-</VirtualHost>
-    EOF
-    put vhost_config, "src/vhost_config"
-    sudo "mv src/vhost_config /etc/apache2/sites-available/#{application}"
-    sudo "a2ensite #{application}"
-  end
+    desc "Configure VHost"
+    task :config_vhost do
+      vhost_config = ERB.new <<-EOF
+  <VirtualHost *:80>
+    ServerName pamstore.carlbtanner.com
+    DocumentRoot #{current_path}/public
+  </VirtualHost>
+      EOF
+            
+      put vhost_config.result, "src/vhost_config"
+      sudo "mv src/vhost_config /etc/apache2/sites-available/#{application}"
+      sudo "a2ensite #{application}"
+    end
 
   desc "Reload Apache"
   task :apache_reload do
     sudo "/etc/init.d/apache2 reload"
   end
+  
+    desc "Restart Application"
+    task :restart, :roles => :app do
+      run "touch #{current_path}/tmp/restart.txt"
+    end
+  
 end
 
 ##

@@ -1,8 +1,8 @@
 login: &login
   adapter: mysql
   host: localhost
-  username: carlbtan_carlb
-  password: melorbode
+  username: username
+  password: passwd
 
 development:
   database: find_a_store_development
