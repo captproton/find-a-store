@@ -1,90 +1,133 @@
-require 'deprec/recipes'
+default_run_options[:pty] = true
 
-# =============================================================================
-# ROLES
-# =============================================================================
-# You can define any number of roles, each of which contains any number of
-# machines. Roles might include such things as :web, or :app, or :db, defining
-# what the purpose of each machine is. You can also specify options that can
-# be used to single out a specific subset of boxes in a particular role, like
-# :primary => true.
+set :application, "find_a_store"
+set :repository,  "git://github.com/captproton/find-a-store.git
+"
 
-set :domain, "www.mynewsite.com"
-role :web, domain
-role :app, domain
-role :db,  domain, :primary => true
-role :scm, domain
+set :deploy_to, "/home/deploy/#{application}"
+set :user, "deploy"
 
-# =============================================================================
-# REQUIRED VARIABLES
-# =============================================================================
-# You must always specify the application and repository for every recipe. The
-# repository must be the URL of the repository you want this recipe to
-# correspond to. The deploy_to path must be the path on each machine that will
-# form the root of the application path.
+set :scm, :git
 
-set :application, "application"
-set :deploy_to, "/var/www/apps/#{application}"
-
-# XXX we may not need this - it doesn't work on windows
-# XXX set :user, ENV['USER']
-set :repository, "svn+ssh://#{user}@#{domain}#{deploy_to}/repos/trunk"
-set :rails_env, "production"
-
-# Automatically symlink these directories from current/public to shared/public.
-# set :app_symlinks, %w{photo, document, asset}
-
-# =============================================================================
-# SPECIAL OPTIONS
-# =============================================================================
-# These options allow you to tweak deprec behaviour
-
-# If you do not keep database.yml in source control, set this to false.
-# After new code is deployed, deprec will symlink current/config/database.yml 
-# to shared/config/database.yml
-#
-# You can generate shared/config/database.yml with 'cap generate_database_yml'
-#
-# set :database_yml_in_scm, true
-
-# =============================================================================
-# APACHE OPTIONS
-# =============================================================================
-set :apache_server_name, domain
-# set :apache_server_aliases, %w{alias1 alias2}
-# set :apache_default_vhost, true # force use of apache_default_vhost_config
-# set :apache_default_vhost_conf, "/usr/local/apache2/conf/default.conf"
-# set :apache_conf, "/usr/local/apache2/conf/apps/#{application}.conf"
-# set :apache_ctl, "/etc/init.d/httpd"
-# set :apache_proxy_port, 8000
-# set :apache_proxy_servers, 2
-# set :apache_proxy_address, "127.0.0.1"
-# set :apache_ssl_enabled, false
-# set :apache_ssl_ip, "127.0.0.1"
-# set :apache_ssl_forward_all, false
-# set :apache_ssl_chainfile, false
+role :app, "bigquiz.info"
+role :web, "bigquiz.info"
+role :db,  "bigquiz.info", :primary => true
 
 
-# =============================================================================
-# MONGREL OPTIONS
-# =============================================================================
-# set :mongrel_servers, apache_proxy_servers
-# set :mongrel_port, apache_proxy_port
-set :mongrel_address, apache_proxy_address
-# set :mongrel_environment, "production"
-# set :mongrel_config, "/etc/mongrel_cluster/#{application}.conf"
-# set :mongrel_user_prefix,  'mongrel_'
-# set :mongrel_user, mongrel_user_prefix + application
-# set :mongrel_group_prefix,  'app_'
-# set :mongrel_group, mongrel_group_prefix + application
 
-# =============================================================================
-# MYSQL OPTIONS
-# =============================================================================
-
-
-# =============================================================================
-# SSH OPTIONS
-# =============================================================================
-# ssh_options[:keys] = %w(/path/to/my/key /path/to/another/key)
-# ssh_options[:port] = 25
+namespace :slicehost do
+  desc "Setup Environment"
+  task :setup_env do
+    update_apt_get
+    install_dev_tools
+    install_git
+    install_sqlite3
+    install_rails_stack
+    install_apache
+    install_passenger
+    config_passenger
+    config_vhost
+  end
+  
+  desc "Update apt-get sources"
+  task :update_apt_get do
+    sudo "apt-get update"
+  end
+  
+  desc "Install Development Tools"
+  task :install_dev_tools do
+    sudo "apt-get install build-essential -y"
+  end
+  
+  desc "Install Git"
+  task :install_git do
+    sudo "apt-get install git-core git-svn -y"
+  end
+  
+  desc "Install Subversion"
+  task :install_subversion do
+    sudo "apt-get install subversion -y"
+  end
+  
+  desc "Install MySQL"
+  task :install_mysql do
+    sudo "apt-get install mysql-server libmysql-ruby -y"
+  end
+  
+  desc "Install PostgreSQL"
+  task :install_postgres do
+    sudo "apt-get install postgresql libpgsql-ruby -y"
+  end
+  
+  desc "Install SQLite3"
+  task :install_sqlite3 do
+    sudo "apt-get install sqlite3 libsqlite3-ruby -y"
+  end
+  
+  desc "Install Ruby, Gems, and Rails"
+  task :install_rails_stack do
+    [
+      "sudo apt-get install ruby ruby1.8-dev irb ri rdoc libopenssl-ruby1.8 -y",
+      "mkdir -p src",
+      "cd src",
+      "wget http://rubyforge.org/frs/download.php/29548/rubygems-1.0.1.tgz",
+      "tar xvzf rubygems-1.0.1.tgz",
+      "cd rubygems-1.0.1/ && sudo ruby setup.rb",
+      "sudo ln -s /usr/bin/gem1.8 /usr/bin/gem",
+      "sudo gem install rails --no-ri --no-rdoc"
+    ].each {|cmd| run cmd}
+  end
+  
+  desc "Install Apache"
+  task :install_apache do
+    sudo "apt-get install apache2 apache2.2-common apache2-mpm-prefork 
+          apache2-utils libexpat1 apache2-prefork-dev libapr1-dev -y"
+    sudo "chown :sudo /var/www"
+    sudo "chmod g+w /var/www"
+  end
+  
+  desc "Install Passenger"
+  task :install_passenger do
+    run "sudo gem install passenger --no-ri --no-rdoc"
+    input = ''
+    run "sudo passenger-install-apache2-module" do |ch,stream,out|
+      next if out.chomp == input.chomp || out.chomp == ''
+      print out
+      ch.send_data(input = $stdin.gets) if out =~ /(Enter|ENTER)/
+    end
+  end
+  
+  desc "Configure Passenger"
+  task :config_passenger do
+    passenger_config =<<-EOF
+LoadModule passenger_module /usr/lib/ruby/gems/1.8/gems/passenger-1.0.1/ext/apache2/mod_passenger.so
+RailsSpawnServer /usr/lib/ruby/gems/1.8/gems/passenger-1.0.1/bin/passenger-spawn-server
+RailsRuby /usr/bin/ruby1.8    
+    EOF
+    put passenger_config, "src/passenger"
+    sudo "mv src/passenger /etc/apache2/conf.d/passenger"
+  end
+  
+  desc "Configure VHost"
+  task :config_vhost do
+    vhost_config =<<-EOF
+<VirtualHost *:80>
+  ServerName bigquiz.info
+  DocumentRoot #{deploy_to}/public
+</VirtualHost>
+    EOF
+    put vhost_config, "src/vhost_config"
+    sudo "mv src/vhost_config /etc/apache2/sites-available/#{application}"
+    sudo "a2ensite #{application}"
+  end
+  
+  desc "Reload Apache"
+  task :apache_reload do
+    sudo "/etc/init.d/apache2 reload"
+  end
+  
+  desc "Restart Application"
+  task :application_restart do
+    touch "#{deploy_to}/tmp/restart.txt"
+  end
+end
