@@ -202,39 +202,6 @@ namespace :slicehost do
   end
 end
 
-namespace :mephisto do
-    desc "Creates the shared themes and assets directories"
-    task :create_shared_dirs, :roles => [:app] do
-        %w(themes assets).each do |dirname|
-            run "umask 02 && mkdir -p #{shared_path}/#{dirname}"
-        end
-        
-      ## dirs = %w(themes assets)
-      ## run "umask 02 && mkdir #{shared_path}/{#{dirs.join(',')}}"
-
-      upload_default_theme
-    end
-    desc  "Uploads default theme: usually simpla"
-    task :upload_default_theme, :roles => [:app] do
-        inform "Old version used to tarball and upload default theme"
-        
-    end
-
-    after 'deploy:setup', "mephisto:create_shared_dirs"
-
-    desc "Symlinks shared configuration and directories into the latest release"
-    task :symlink_shared, :roles => [:app, :db] do
-      run "rm -rf #{latest_release}/themes; ln -s #{shared_path}/themes #{latest_release}/themes"
-      run "rm -rf #{latest_release}/public/assets; ln -s #{shared_path}/assets #{latest_release}/public/assets"
-    end
-
-    desc "Bootstraps the database"
-    task :bootstrap_db, :roles => [:db] do
-      rails_env = fetch(:rails_env, "production")
-      run "cd #{latest_release}; rake RAILS_ENV=#{rails_env} db:bootstrap"
-    end
-    
-end
 ##
 # Custom installation tasks for Ubuntu (Slicehost).
 #
