@@ -3,6 +3,7 @@ tmp/**/*
 log/*.log
 config/amazon_s3.yml
 config/database.yml
+config/deploy.rb
 vendor/rails
 db/*.sqlite
 db/*.sqlite2
