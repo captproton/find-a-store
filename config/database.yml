@@ -5,14 +5,14 @@ login: &login
   password: melorbode
 
 development:
-  database: development
+  database: find_a_store_development
   <<: *login
 
 test:
-  database: test
+  database: find_a_store_test
   <<: *login
 
 production:
-  database: production
+  database: find_a_store_production
   <<: *login
 

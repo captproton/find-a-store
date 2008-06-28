@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 2) do
+ActiveRecord::Schema.define(:version => 20080627022108) do
 
   create_table "assets", :force => true do |t|
     t.string   "filename"
@@ -38,6 +38,15 @@ ActiveRecord::Schema.define(:version => 2) do
     t.integer  "visits_count",              :limit => 11, :default => 0
     t.string   "time_zone",                               :default => "Etc/UTC"
     t.string   "permalink"
+  end
+
+  create_table "vendors", :force => true do |t|
+    t.string   "name"
+    t.string   "address"
+    t.float    "lat"
+    t.float    "lng"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

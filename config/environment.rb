@@ -79,12 +79,12 @@ GeoKit::Geocoders::proxy_pass = nil
 # This is your yahoo application key for the Yahoo Geocoder.
 # See http://developer.yahoo.com/faq/index.html#appid
 # and http://developer.yahoo.com/maps/rest/V1/geocode.html
-GeoKit::Geocoders::yahoo = 'REPLACE_WITH_YOUR_YAHOO_KEY'
+## GeoKit::Geocoders::yahoo = 'REPLACE_WITH_YOUR_YAHOO_KEY'
     
 # This is your Google Maps geocoder key. 
 # See http://www.google.com/apis/maps/signup.html
 # and http://www.google.com/apis/maps/documentation/#Geocoding_Examples
-GeoKit::Geocoders::google = 'REPLACE_WITH_YOUR_GOOGLE_KEY'
+GeoKit::Geocoders::google = 'ABQIAAAA4SWxtDIpMUKMLcot52tjZBS4ix4CLem0APqIWsKPuSYpY7Tf5BQBXqFyVmOJY8hEfShQ8EVEtPIHlQ'
     
 # This is your username and password for geocoder.us.
 # To use the free service, the value can be set to nil or false.  For 

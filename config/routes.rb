@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :vendors
+
 
   map.resource :sessions
   map.resources :users do |user|
