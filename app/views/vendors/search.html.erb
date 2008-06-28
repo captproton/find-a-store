@@ -1,0 +1,16 @@
+<h1><strong><%= pluralize(@vendors.size, 'sushi bar') %></strong>
+within <strong><%= h @within %> miles</strong>:</h1>
+
+<ul>
+<% for vendor in @vendors -%>
+  <li>
+    <p>
+      <strong><%= link_to vendor.name, vendor %></strong> 
+      at <%= h vendor.address %><br/>
+      <i>(<%= sprintf("%.2f", vendor.distance) %> miles away)</i>
+    </p>
+  </li>
+<% end -%>
+</ul>
+
+<div id="map" style="width:500px; height:300px;"></div>

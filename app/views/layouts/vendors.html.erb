@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <title>Shops: <%= controller.action_name %></title>
+  <!-- #START:start -->
+  <script type="text/javascript"
+          src="http://maps.google.com/maps?file=api&amp;v=2&amp;
+               key=<%= GeoKit::Geocoders::google %>" >
+  </script>
+  <% if @vendors -%>
+    <script type="text/javascript"> 
+      var vendors = <%= @vendors.to_json %>;
+    </script>
+  <% end -%>
+  <%= javascript_include_tag :defaults %>
+  <!-- #END:start -->
+  <%= stylesheet_link_tag 'screen' %>
+</head>
+<body onload="load()" onunload="GUnload()">
+
+<div id="logo">
+  <%= link_to(image_tag("logo.png"), vendors_path) %>
+</div>
+  
+<div id="content">
+  <p style="color: green"><%= flash[:notice] %></p>
+  <%= yield  %>
+</div>
+
+</body>
+</html>

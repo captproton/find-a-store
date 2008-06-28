@@ -1,0 +1,23 @@
+<p>
+  <b>Name:</b>
+  <%=h @vendor.name %>
+</p>
+
+<p>
+  <b>Address:</b>
+  <%=h @vendor.address %>
+</p>
+
+<p>
+  <b>Lat:</b>
+  <%=h @vendor.lat %>
+</p>
+
+<p>
+  <b>Long:</b>
+  <%=h @vendor.long %>
+</p>
+
+
+<%= link_to 'Edit', edit_vendor_path(@vendor) %> |
+<%= link_to 'Back', vendors_path %>
