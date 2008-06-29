@@ -28,7 +28,7 @@ within <strong><%= h @within %> miles</strong>:</h1>
   <li>
     <p>
       <strong><%= link_to vendor.name, vendor %></strong> 
-      at <%= h vendor.address %><br/>
+      at <%= h vendor.address %> (<a href="http://maps.google.com?q=<%= h vendor.address %>">Get Directions</a>) <br/>
       <i>(<%= sprintf("%.2f", vendor.distance) %> miles away)</i>
     </p>
   </li>
