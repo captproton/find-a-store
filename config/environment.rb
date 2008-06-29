@@ -84,6 +84,9 @@ GeoKit::Geocoders::proxy_pass = nil
 # This is your Google Maps geocoder key. 
 # See http://www.google.com/apis/maps/signup.html
 # and http://www.google.com/apis/maps/documentation/#Geocoding_Examples
+## Key for http://localhost:3000/vendors
+## GeoKit::Geocoders::google = 'ABQIAAAA4SWxtDIpMUKMLcot52tjZBS4ix4CLem0APqIWsKPuSYpY7Tf5BQBXqFyVmOJY8hEfShQ8EVEtPIHlQ'
+
 GeoKit::Geocoders::google = 'ABQIAAAA4SWxtDIpMUKMLcot52tjZBRDQaZ3p2zLIcjMNF0eb7FbYvGtQRT-NI3utTFQdgo6MqRKP9811C5JLQ'
     
 # This is your username and password for geocoder.us.
