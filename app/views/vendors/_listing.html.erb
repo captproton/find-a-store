@@ -1,0 +1,28 @@
+
+<% for vendor in @vendors %>
+	<li> <%= link_to vendor.name, vendor_path(vendor) %> </li>
+<% end %>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Address</th>
+    <th>Lat</th>
+    <th>lng</th>
+  </tr>
+
+<% for vendor in @vendors %>
+  <tr>
+    <td><%=h vendor.name %></td>
+    <td><%=h vendor.address %></td>
+    <td><%=h vendor.lat %></td>
+    <td><%=h vendor.lng %></td>
+    <td><%= link_to 'Show', vendor %></td>
+    <td><%= link_to 'Edit', edit_vendor_path(vendor) %></td>
+    <td><%= link_to 'Destroy', vendor, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New vendor', new_vendor_path %>

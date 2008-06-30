@@ -46,6 +46,10 @@ class VendorsController < ApplicationController
   # GET /vendors/1/edit
   def edit
     @vendor = Vendor.find(params[:id])
+    respond_to do |wants|
+      wants.html
+      wants.js { render :partial => 'form', :object => @vendor }
+    end
   end
 
   # POST /vendors

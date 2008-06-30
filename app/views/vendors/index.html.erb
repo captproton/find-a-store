@@ -1,34 +1,17 @@
-<h1>Vendors by name</h1>
-<% form_tag vendors_path, :method => 'get' do %> 
-	<p>
-		<%= text_field_tag :search, params[:search] %>
-		<%= submit_tag "Search", :name => nil %>
-	</p>
-<% end #</form> %>
 
-<h1>Vendors by location</h1>
-<% form_tag vendors_path, :method => 'get' do %> 
-	<p><label>Address</label>
-		<%= text_field_tag :address, params[:address] %>
-	</p>
-	<p><label>Within</label> <%= text_field_tag :within, params[:within] %> </p>
-		<%= submit_tag "Search", :name => nil %>
-
-<% end #</form> %>
-
-<h1>Listing vendors</h1>
+<h2>Stores Near You</h2>
 <% unless @within %>
-
+Use the search tool on the left.
 <% else %>
-<h1><strong><%= pluralize(@vendors.size, 'stores') %></strong>
-within <strong><%= h @within %> miles</strong>:</h1>
+<h2><strong><%= pluralize(@vendors.size, 'stores') %></strong>
+within <strong><%= h @within %> miles</strong>:</h2>
 
 <ul>
 <% for vendor in @vendors -%>
   <li>
     <p>
-      <strong><%= link_to vendor.name, vendor %></strong> 
-      at <%= h vendor.address %> (<a href="http://maps.google.com?q=<%= h vendor.address %>">Get Directions</a>) <br/>
+      <strong><%= link_to vendor.name, vendor %></strong> <br />
+      <%= h vendor.address %> (<a href="http://maps.google.com?q=<%= h vendor.address %>">Get Directions</a>) <br/>
       <i>(<%= sprintf("%.2f", vendor.distance) %> miles away)</i>
     </p>
   </li>
@@ -37,30 +20,12 @@ within <strong><%= h @within %> miles</strong>:</h1>
 
 <div id="map" style="width:500px; height:300px;"></div><% end %>
 
-<% for vendor in @vendors %>
-	<li> <%= link_to vendor.name, vendor_path(vendor) %> </li>
-<% end %>
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Address</th>
-    <th>Lat</th>
-    <th>lng</th>
-  </tr>
-
-<% for vendor in @vendors %>
-  <tr>
-    <td><%=h vendor.name %></td>
-    <td><%=h vendor.address %></td>
-    <td><%=h vendor.lat %></td>
-    <td><%=h vendor.lng %></td>
-    <td><%= link_to 'Show', vendor %></td>
-    <td><%= link_to 'Edit', edit_vendor_path(vendor) %></td>
-    <td><%= link_to 'Destroy', vendor, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
 
 <br />
 
 <%= link_to 'New vendor', new_vendor_path %>
+
+<div id='edit_vendor_div' style='visibility: hidden;'>  
+    <div class="hd">Edit Vendor</div>  
+    <div class="bd"><%= image_tag 'spinner.gif' %> Loading...</div>  
+</div>
